@@ -41,13 +41,13 @@ Este é um sistema de gerenciamento de estoque desenvolvido em Golang, com o obj
     go run main.go
 
 4. Estrutura do Projeto:
-    inventory-management-system/
-    ├── controllers/    # Contém a lógica dos endpoints
-    ├── models/         # Modelos de dados (structs)
-    ├── repositories/   # Lógica de acesso ao banco de dados
-    ├── services/       # Camada de regras de negócio
-    ├── tests/          # Arquivos de teste
-    ├── main.go         # Arquivo principal da aplicação
-    ├── go.mod          # Gerenciamento de dependências
-    ├── README.md       # Documentação do projeto
-    └── scripts/        # Scripts para migrações e configuração inicial
+inventory-management-system
+├── controllers/    # Contém a lógica dos endpoints
+├── models/         # Modelos de dados (structs)
+├── repositories/   # Lógica de acesso ao banco de dados
+├── services/       # Camada de regras de negócio
+├── tests/          # Arquivos de teste
+├── main.go         # Arquivo principal da aplicação
+├── go.mod          # Gerenciamento de dependências
+├── README.md       # Documentação do projeto
+└── scripts/        # Scripts para migrações e configuração inicial
