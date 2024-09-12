@@ -1,8 +1,8 @@
 package main
 
 import (
+	"inventory-management-system/handlers"
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -24,9 +24,15 @@ func main() {
 	// Initialize Gin
 	r := gin.Default()
 
-	r.GET("/", func(context *gin.Context){
-		context.JSON(http.StatusOK, gin.H{"message": "Hello, World!"})
-	})
+	// Create a new ProductHandler
+	productHandler := &handlers.ProductHandler{DB: db}
+
+	// Products routes
+	r.GET("/products", productHandler.GetProducts)
+	r.GET("/products/:id", productHandler.GetProductByID)
+	r.POST("/products", productHandler.CreateProduct)
+	r.PUT("/products/:id", productHandler.UpdateProduct)
+	r.DELETE("/products/:id", productHandler.DeleteProduct)
 
 	r.Run(":8080")
 }
