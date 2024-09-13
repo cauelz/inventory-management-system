@@ -83,11 +83,11 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	query := "UPDATE products SET name = $1, description = $2, price = $3, stock_qty = $4 WHERE id = $5 RETURNING *"
+	query := "UPDATE products SET name = $1, description = $2, price = $3, stock_quantity = $4 WHERE id = $5 RETURNING *"
 
 	row := h.DB.QueryRow(query, product.Name, product.Description, product.Price, product.StockQty, product.ID)
 
-	error = row.Scan(&product.ID)
+	error = row.Scan(&product.ID, &product.Name, &product.Description, &product.Price, &product.StockQty, &product.CreatedAt, &product.UpdatedAt)
 
 	if error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not update product", "error": error.Error()})
