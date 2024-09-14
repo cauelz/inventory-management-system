@@ -157,3 +157,71 @@ func TestUpdateProduct(t *testing.T) {
         t.Errorf("there were unfulfilled expectations: %s", err)
     }
 }
+
+func TestCreateProduct(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	r := gin.Default()
+
+	// Crie um mock de banco de dados usando sqlmock
+	db, mock, err := sqlmock.New()
+	// Crie um objeto sqlx.DB a partir do mock
+	sqlxDB := sqlx.NewDb(db, "sqlmock")
+
+	if err != nil {
+        t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+    }
+    defer db.Close()
+
+	// Criar um mock da chamada para o banco de dados
+	mock.ExpectQuery("INSERT INTO products \\(name, description, price, stock_quantity\\) VALUES \\(\\$1, \\$2, \\$3, \\$4\\) RETURNING \\*").
+		WithArgs("Product 1", "Description 1", 100.0, 10).
+		WillReturnRows(sqlmock.NewRows([]string{"id", "name", "description", "price", "stock_quantity", "created_at", "updated_at"}).
+		AddRow(1, "Product 1", "Description 1", 100.0, 10, time.Now(), time.Now()))
+
+	productHandler := handlers.ProductHandler{DB: sqlxDB}
+
+	r.POST("/products", productHandler.CreateProduct)
+
+	productJSON := `{"name":"Product 1","description":"Description 1","price":100.0,"stock_quantity":10}`
+	req, _ :=http.NewRequest(http.MethodPost, "/products", strings.NewReader(productJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusCreated, w.Code)
+	assert.Contains(t, w.Body.String(), "Product 1")
+}
+
+func TestDeleteProduct(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	r := gin.Default()
+
+	// Crie um mock de banco de dados usando sqlmock
+	db, mock, err := sqlmock.New()
+	// Crie um objeto sqlx.DB a partir do mock
+	sqlxDB := sqlx.NewDb(db, "sqlmock")
+
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+
+	// Criar um mock da chamada para o banco de dados
+	mock.ExpectExec("DELETE FROM products WHERE id = \\$1").
+		WillReturnResult(sqlmock.NewResult(0, 1))
+
+	productHandler := handlers.ProductHandler{DB: sqlxDB}
+
+	r.DELETE("/products/:id", productHandler.DeleteProduct)
+
+	req, _ :=http.NewRequest(http.MethodDelete, "/products/1", nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Contains(t, w.Body.String(), "Product deleted successfully")
+}

@@ -4,6 +4,7 @@ import (
 	"inventory-management-system/db"
 	"inventory-management-system/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -73,10 +74,16 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 }
 
 func (h *ProductHandler) UpdateProduct(c *gin.Context) {
+
+	// Get the ID from the URL
+	id := c.Param("id")
+	// convert the id to int
+	idInt, error := strconv.ParseInt(id, 10, 64)
+
 	var product models.Product
 
 	// Bind the request body to the product struct
-	error := c.BindJSON(&product)
+	error = c.BindJSON(&product)
 
 	if error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request body", "error": error.Error()})
@@ -85,7 +92,7 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 
 	query := "UPDATE products SET name = $1, description = $2, price = $3, stock_quantity = $4 WHERE id = $5 RETURNING *"
 
-	row := h.DB.QueryRow(query, product.Name, product.Description, product.Price, product.StockQty, product.ID)
+	row := h.DB.QueryRow(query, product.Name, product.Description, product.Price, product.StockQty, idInt)
 
 	error = row.Scan(&product.ID, &product.Name, &product.Description, &product.Price, &product.StockQty, &product.CreatedAt, &product.UpdatedAt)
 
