@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"inventory-management-system/db"
-	"inventory-management-system/models"
+	"inventory-management-system/internal/models"
 	"net/http"
 	"strconv"
 
@@ -79,6 +79,11 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 	id := c.Param("id")
 	// convert the id to int
 	idInt, error := strconv.ParseInt(id, 10, 64)
+
+	if error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "could not parse Id", "error": error.Error()})
+		return
+	}
 
 	var product models.Product
 
