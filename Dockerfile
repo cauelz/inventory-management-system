@@ -12,10 +12,10 @@ RUN go mod download
 COPY . .
 
 # Compilar a aplicação
-RUN go build -o main .
+RUN go build -o ./cmd/main ./cmd/main.go
 
 # Definir a porta que a aplicação irá expor
 EXPOSE 8080
 
 # Comando para rodar a aplicação
-CMD ["./main"]
+CMD ["./cmd/main"]

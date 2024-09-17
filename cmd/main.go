@@ -26,9 +26,11 @@ func main() {
     // Ler variáveis de ambiente
     dbHost := viper.GetString("DB_HOST")
     dbPort := viper.GetString("DB_PORT")
-    dbUser := viper.GetString("POSTGRES_USER")
-    dbPassword := viper.GetString("POSTGRES_PASSWORD")
-    dbName := viper.GetString("POSTGRES_DB")
+    dbUser := viper.GetString("DB_USER")
+    dbPassword := viper.GetString("DB_PASSWORD")
+    dbName := viper.GetString("DB_NAME")
+
+	fmt.Println(dbHost, dbPort, dbUser, dbPassword, dbName)
 
     // Construir a string de conexão
     connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",

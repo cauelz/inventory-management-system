@@ -10,11 +10,6 @@ import (
 
 type Config struct {
 	ServerAddress string
-	DBHost string
-	DBPort string
-	DBUser string
-	DBPassword string
-	DBName string
 }
 
 func LoadConfig() (*Config, error) {
@@ -31,11 +26,6 @@ func LoadConfig() (*Config, error) {
 
 	config := &Config{
 		ServerAddress: viper.GetString("SERVER_ADDRESS"),
-		DBHost: viper.GetString("DB_HOST"),
-		DBPort: viper.GetString("DB_PORT"),
-		DBUser: viper.GetString("POSTGRES_USER"),
-		DBPassword: viper.GetString("POSTGRES_PASSWORD"),
-		DBName: viper.GetString("POSTGRES_DB"),
 	}
 
 	return config, nil
