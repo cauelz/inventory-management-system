@@ -1,14 +1,14 @@
 package routes
 
 import (
-	"inventory-management-system/db"
 	"inventory-management-system/internal/handlers"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 )
 
 
-func RegisterRoutes(router *gin.Engine, db db.Database) {
+func RegisterRoutes(router *gin.Engine, db *sqlx.DB) {
     productHandler := &handlers.ProductHandler{DB: db}
 
     router.GET("/products", productHandler.GetProducts)

@@ -1,21 +1,21 @@
 package server
 
 import (
-	"inventory-management-system/db"
 	"inventory-management-system/internal/routes"
 	"inventory-management-system/pkg/config"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 )
 
 
 type Server struct {
 	config *config.Config
 	router *gin.Engine
-	db	 db.Database
+	db	 *sqlx.DB
 }
 
-func NewServer(config *config.Config, dbConnection db.Database) *Server {
+func NewServer(config *config.Config, dbConnection *sqlx.DB) *Server {
 	return &Server{
 		config: config,
 		db: dbConnection,

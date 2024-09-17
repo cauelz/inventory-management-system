@@ -33,9 +33,7 @@ func main() {
 	fmt.Println(dbHost, dbPort, dbUser, dbPassword, dbName)
 
     // Construir a string de conexão
-    connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        dbHost, dbPort, dbUser, dbPassword, dbName)
-
+    connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	// Connect to the database
 	db, err = sqlx.Connect("postgres", connStr)

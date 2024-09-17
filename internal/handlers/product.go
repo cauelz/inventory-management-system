@@ -1,16 +1,16 @@
 package handlers
 
 import (
-	"inventory-management-system/db"
 	"inventory-management-system/internal/models"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 )
 
 type ProductHandler struct {
-	DB db.Database
+	DB *sqlx.DB
 }
 
 func (h *ProductHandler) GetProducts(c *gin.Context) {
