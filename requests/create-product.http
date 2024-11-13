@@ -1,9 +1,0 @@
-POST http://localhost:8080/products
-Content-Type: application/json
-
-{
-  "name": "Product 1",
-  "description": "Description of product 1",
-  "price": 100,
-  "stock_qty": 10
-}
